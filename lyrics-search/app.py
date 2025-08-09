@@ -7,13 +7,19 @@ import tempfile
 
 app = FastAPI()
 
-# Allow your frontend to access the backend (adjust as needed)
+ALLOWED_ORIGINS = [
+    "https://triplemstudio.dev",
+    "https://subtle-zabaione-727f17.netlify.app/",
+    "http://localhost:8888"
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # or set to your domain if deployed
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=ALLOWED_ORIGINS,
+    allow_methods=["POST","OPTIONS"],
+    allow_headers=["authorization","content-type","x-api-key"],
 )
+
 
 @app.get("/lyrics")
 def get_lyrics(artist: str = Query(...), title: str = Query(...)):
